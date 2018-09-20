@@ -11,6 +11,8 @@
  */
 package paystation.domain;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -22,6 +24,7 @@ public class PayStationImplTest {
     @Before
     public void setup() {
         ps = new PayStationImpl();
+        ps.initMap();
     }
 
     /**
@@ -138,4 +141,25 @@ public class PayStationImplTest {
         assertEquals("Insert after cancel should work",
                 10, ps.readDisplay());
     }
+
+    
+    // Call to cancel returns a map containing one coin entered.
+    @Test
+    public void cancelRetOneCoin()
+            throws IllegalCoinException {
+        int numberOfCoinsRet = 0;
+        ps.addPayment(5);
+        //ps.addPayment(5);
+        //ps.addPayment(25);
+        Map<Integer, Integer> map = new HashMap<>();
+        map = ps.cancel();
+        numberOfCoinsRet = map.get(5) + map.get(10) + map.get(25);
+        System.out.println("number of coins = " + numberOfCoinsRet);
+        System.out.println(map);
+
+        assertEquals("Cancel should return 1 coin",
+                1, numberOfCoinsRet);
+
+    }
+
 }
