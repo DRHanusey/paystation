@@ -24,7 +24,9 @@ public class PayStationImplTest {
     @Before
     public void setup() {
         ps = new PayStationImpl();
-        ps.initMap();
+        //Creates a Map object pairing the "key:coin type=val: number of coins"
+        //initiates number of coins to 0
+        ps.initCoinsDepositedMap();
     }
 
     /**
@@ -142,23 +144,143 @@ public class PayStationImplTest {
                 10, ps.readDisplay());
     }
 
-    
-    // Call to cancel returns a map containing one coin entered.
+    // Call to cancel returns a map containing one coin deposited.
     @Test
-    public void cancelRetOneCoin()
+    public void shouldRetOneCoin()
             throws IllegalCoinException {
+        //create map of coins deposited object
+        Map<Integer, Integer> coinsDepositedMap = new HashMap<>();
+
         int numberOfCoinsRet = 0;
+
+        //deposit 1 nickle
         ps.addPayment(5);
-        //ps.addPayment(5);
-        //ps.addPayment(25);
-        Map<Integer, Integer> map = new HashMap<>();
-        map = ps.cancel();
-        numberOfCoinsRet = map.get(5) + map.get(10) + map.get(25);
+
+        coinsDepositedMap = ps.cancel();
+
+        //sum each map value representing the numbers of coins deposited of each
+        //type of coin
+        //numberOfCoinsRet = coinsDepositedMap.get(5) + coinsDepositedMap.get(10) + coinsDepositedMap.get(25);
+        if (coinsDepositedMap.containsKey(5)) {
+            numberOfCoinsRet += coinsDepositedMap.get(5);
+        }
+        if (coinsDepositedMap.containsKey(10)) {
+            numberOfCoinsRet += coinsDepositedMap.get(10);
+        }
+        if (coinsDepositedMap.containsKey(25)) {
+            numberOfCoinsRet += coinsDepositedMap.get(25);
+        }
+
+        System.out.println("shouldRetOneCoin");
         System.out.println("number of coins = " + numberOfCoinsRet);
-        System.out.println(map);
+        System.out.println(coinsDepositedMap);
 
         assertEquals("Cancel should return 1 coin",
                 1, numberOfCoinsRet);
+    }
+
+// Call to cancel returns a map containing mixture of coins deposited.
+    @Test
+    public void shouldRetMixtureOfCoins()
+            throws IllegalCoinException {
+        //create map of coins deposited object
+        Map<Integer, Integer> coinsDepositedMap = new HashMap<>();
+
+        int numberOfCoinsDeposited = 6;
+        int numberOfCoinsRet = 0;
+
+        //deposit 3 nickle
+        ps.addPayment(5);
+        ps.addPayment(5);
+        ps.addPayment(5);
+        //deposit 2 dimes
+        ps.addPayment(10);
+        ps.addPayment(10);
+        //deposit 1 quarter
+        ps.addPayment(25);
+
+        coinsDepositedMap = ps.cancel();
+
+        //sum each map value representing the numbers of coins deposited of each
+        //type of coin
+        numberOfCoinsRet = coinsDepositedMap.get(5) + coinsDepositedMap.get(10) + coinsDepositedMap.get(25);
+        System.out.println("shouldRetMixtureOfCoins");
+        System.out.println("number of coins returned = " + numberOfCoinsRet);
+        System.out.println(coinsDepositedMap);
+
+        assertEquals("Cancel should return 6 coin",
+                numberOfCoinsDeposited, numberOfCoinsRet);
+    }
+
+    // Call to cancel returns map of only coins deposited and does not
+    //contain keys for coins not deposited
+    @Test
+    public void shouldNotReturnCoinThatWasntDeposited()
+            throws IllegalCoinException {
+        //create map of coins deposited object
+        Map<Integer, Integer> coinsDepositedMap = new HashMap<>();
+
+        //deposit 3 nickle
+        ps.addPayment(5);
+        ps.addPayment(5);
+        ps.addPayment(5);
+        //deposit 0 dimes    
+        //deposit 1 quarter
+        ps.addPayment(25);
+
+        coinsDepositedMap = ps.cancel();
+
+        System.out.println("shouldNotReturnCoinThatWasntDeposited");
+        System.out.println(coinsDepositedMap);
+
+        assertFalse("Cancel should not return coin types that were not deposited",
+                coinsDepositedMap.containsKey(10));
+
+    }
+
+    @Test
+    public void shouldClearMapAfterCancel()
+            throws IllegalCoinException {
+        //create map of coins deposited object
+        Map<Integer, Integer> coinsDepositedMap = new HashMap<>();
+        int numberOfCoinsRet = 0;
+
+        //sum each map value representing the numbers of coins deposited of each
+        //type of coin
+        if (coinsDepositedMap.containsKey(5)) {
+            numberOfCoinsRet += coinsDepositedMap.get(5);
+        }
+        if (coinsDepositedMap.containsKey(10)) {
+            numberOfCoinsRet += coinsDepositedMap.get(10);
+        }
+        if (coinsDepositedMap.containsKey(25)) {
+            numberOfCoinsRet += coinsDepositedMap.get(25);
+        }
+
+        //deposit 3 nickle
+        ps.addPayment(5);
+        ps.addPayment(5);
+        ps.addPayment(5);
+        //deposit 0 dimes    
+        //deposit 1 quarter
+        ps.addPayment(25);
+
+        //will return map of 5=3, 25=1
+        coinsDepositedMap = ps.cancel();
+        //should return map of 5=0, 10=0, 25=0
+        coinsDepositedMap = ps.cancel();
+
+        System.out.println("shouldClearMapAfterCancel");
+        System.out.println(coinsDepositedMap);
+
+        assertEquals("Cancel should return 0 coin",
+                0, numberOfCoinsRet);
+        assertTrue("Cancel should return map containing 5 as key",
+                coinsDepositedMap.containsKey(5));
+        assertTrue("Cancel should return map containing 10 as key",
+                coinsDepositedMap.containsKey(10));
+        assertTrue("Cancel should return map containing 25 as key",
+                coinsDepositedMap.containsKey(25));
 
     }
 
