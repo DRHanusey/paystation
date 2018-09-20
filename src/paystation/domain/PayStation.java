@@ -57,5 +57,8 @@ public interface PayStation {
      /**
      * Initiate map used for tracking coins deposited
      */
-    public void initMap();
+    public void initCoinsDepositedMap();
+    
+    //returns the current coinMap
+    public Map<Integer, Integer> returnCoinMap();
 }

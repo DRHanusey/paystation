@@ -32,9 +32,11 @@ public class PayStationImpl implements PayStation {
         coinMap.put(10, 0);
         coinMap.put(25, 0);
     }
-
-    ;
     
+    public Map<Integer, Integer> returnCoinMap(){
+        return coinMap;
+    }
+
     @Override
     public void addPayment(int coinValue)
             throws IllegalCoinException {
@@ -75,7 +77,7 @@ public class PayStationImpl implements PayStation {
     @Override
     public Map<Integer, Integer> cancel() {
 
-        Map<Integer, Integer> coinMapCopy = new HashMap<>();
+        
         if (coinMap.get(5) == 0) {
             coinMap.remove(5);
         }
@@ -86,11 +88,16 @@ public class PayStationImpl implements PayStation {
             coinMap.remove(25);
         }
 
-        coinMapCopy = coinMap;
-        //initCoinsDepositedMap();
-        
+        //Creates new map and makes a copy of the current coinMap
+        Map<Integer, Integer> coinMapCopy = new HashMap<>();
+        coinMapCopy.putAll(coinMap);
+
+        //Resets the coinMap to all 0 values
+        initCoinsDepositedMap();
         reset();
-        
+
+        //returns the coinMap copy so as to return the correct amount of change
+        //and not all zeros.
         return coinMapCopy;
     }
 

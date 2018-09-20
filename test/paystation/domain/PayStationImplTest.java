@@ -268,7 +268,7 @@ public class PayStationImplTest {
         //will return map of 5=3, 25=1
         coinsDepositedMap = ps.cancel();
         //should return map of 5=0, 10=0, 25=0
-        coinsDepositedMap = ps.cancel();
+        coinsDepositedMap = ps.returnCoinMap();
 
         System.out.println("shouldClearMapAfterCancel");
         System.out.println(coinsDepositedMap);
