@@ -24,33 +24,34 @@ public class PayStationImpl implements PayStation {
 
     private int insertedSoFar;
     private int timeBought;
-    Map<Integer, Integer> map = new HashMap<>();
-    
-    
+    Map<Integer, Integer> coinMap = new HashMap<>();
+
     //initiate map object to zero
-    public void initMap() {
-        map.put(5,0);
-        map.put(10,0);
-        map.put(25,0);
-    };
+    public void initCoinsDepositedMap() {
+        coinMap.put(5, 0);
+        coinMap.put(10, 0);
+        coinMap.put(25, 0);
+    }
 
-    
-
+    ;
     
     @Override
     public void addPayment(int coinValue)
             throws IllegalCoinException {
-        
+        if (insertedSoFar == 0) {
+            initCoinsDepositedMap();
+        }
+
         switch (coinValue) {
             case 5:
                 //retuns value for given key, adds 1 to it, puts it back into map
-                map.put( 5 , map.get(5)+1 );
+                coinMap.put(5, coinMap.get(5) + 1);
                 break;
             case 10:
-                map.put( 10 , map.get(10)+1 );
+                coinMap.put(10, coinMap.get(10) + 1);
                 break;
             case 25:
-                map.put( 25 , map.get(25)+1 );
+                coinMap.put(25, coinMap.get(25) + 1);
                 break;
             default:
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
@@ -73,8 +74,24 @@ public class PayStationImpl implements PayStation {
 
     @Override
     public Map<Integer, Integer> cancel() {
+
+        Map<Integer, Integer> coinMapCopy = new HashMap<>();
+        if (coinMap.get(5) == 0) {
+            coinMap.remove(5);
+        }
+        if (coinMap.get(10) == 0) {
+            coinMap.remove(10);
+        }
+        if (coinMap.get(25) == 0) {
+            coinMap.remove(25);
+        }
+
+        coinMapCopy = coinMap;
+        //initCoinsDepositedMap();
+        
         reset();
-        return map;
+        
+        return coinMapCopy;
     }
 
     private void reset() {
