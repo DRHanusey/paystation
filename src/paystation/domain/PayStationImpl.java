@@ -97,6 +97,8 @@ public class PayStationImpl implements PayStation {
         if (coinMap.get(25) == 0) {
             coinMap.remove(25);
         }
+        //test
+        
 
         //Creates new map and makes a copy of the current coinMap
         Map<Integer, Integer> coinMapCopy = new HashMap<>();
