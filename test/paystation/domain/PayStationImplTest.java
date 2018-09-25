@@ -283,5 +283,14 @@ public class PayStationImplTest {
                 coinsDepositedMap.containsKey(25));
 
     }
-
+     @Test
+     public void ShouldTotalCoinsThatWasEnterAndEmptyThePaystation() throws IllegalCoinException{
+         
+        ps.addPayment(10);
+        ps.buy();
+        ps.addPayment(25);
+        ps.cancel();
+        int shouldbenum = ps.empty();
+         assertEquals("should be 10",10,shouldbenum);
+     }
 }

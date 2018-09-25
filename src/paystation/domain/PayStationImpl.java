@@ -25,7 +25,11 @@ public class PayStationImpl implements PayStation {
     private int insertedSoFar;
     private int timeBought;
     Map<Integer, Integer> coinMap = new HashMap<>();
-
+    private int totalcoins = 0;
+    private int n;
+    private int q;
+    private int d;
+    
     //initiate map object to zero
     public void initCoinsDepositedMap() {
         coinMap.put(5, 0);
@@ -48,17 +52,22 @@ public class PayStationImpl implements PayStation {
             case 5:
                 //retuns value for given key, adds 1 to it, puts it back into map
                 coinMap.put(5, coinMap.get(5) + 1);
+                
                 break;
             case 10:
                 coinMap.put(10, coinMap.get(10) + 1);
+                
                 break;
             case 25:
                 coinMap.put(25, coinMap.get(25) + 1);
+                
+                
                 break;
             default:
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
         }
         insertedSoFar += coinValue;
+        
         timeBought = insertedSoFar / 5 * 2;
     }
 
@@ -70,6 +79,7 @@ public class PayStationImpl implements PayStation {
     @Override
     public Receipt buy() {
         Receipt r = new ReceiptImpl(timeBought);
+        totalcoins += insertedSoFar;
         reset();
         return r;
     }
@@ -103,5 +113,14 @@ public class PayStationImpl implements PayStation {
 
     private void reset() {
         timeBought = insertedSoFar = 0;
+    }
+    
+        @Override
+    public int empty(){
+        int newtotal = 0;
+        newtotal = totalcoins;
+        totalcoins =0;
+        
+     return newtotal;
     }
 }
