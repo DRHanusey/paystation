@@ -171,10 +171,9 @@ public class PayStationImplTest {
             numberOfCoinsRet += coinsDepositedMap.get(25);
         }
 
-        System.out.println("shouldRetOneCoin");
-        System.out.println("number of coins = " + numberOfCoinsRet);
-        System.out.println(coinsDepositedMap);
-
+        //System.out.println("shouldRetOneCoin");
+        //System.out.println("number of coins = " + numberOfCoinsRet);
+        //System.out.println(coinsDepositedMap);
         assertEquals("Cancel should return 1 coin",
                 1, numberOfCoinsRet);
     }
@@ -204,9 +203,9 @@ public class PayStationImplTest {
         //sum each map value representing the numbers of coins deposited of each
         //type of coin
         numberOfCoinsRet = coinsDepositedMap.get(5) + coinsDepositedMap.get(10) + coinsDepositedMap.get(25);
-        System.out.println("shouldRetMixtureOfCoins");
-        System.out.println("number of coins returned = " + numberOfCoinsRet);
-        System.out.println(coinsDepositedMap);
+        //System.out.println("shouldRetMixtureOfCoins");
+        //System.out.println("number of coins returned = " + numberOfCoinsRet);
+        //System.out.println(coinsDepositedMap);
 
         assertEquals("Cancel should return 6 coin",
                 numberOfCoinsDeposited, numberOfCoinsRet);
@@ -230,32 +229,19 @@ public class PayStationImplTest {
 
         coinsDepositedMap = ps.cancel();
 
-        System.out.println("shouldNotReturnCoinThatWasntDeposited");
-        System.out.println(coinsDepositedMap);
-
+        //System.out.println("shouldNotReturnCoinThatWasntDeposited");
+        //System.out.println(coinsDepositedMap);
         assertFalse("Cancel should not return coin types that were not deposited",
                 coinsDepositedMap.containsKey(10));
 
     }
 
-    @Test
+     @Test
     public void shouldClearMapAfterCancel()
             throws IllegalCoinException {
         //create map of coins deposited object
         Map<Integer, Integer> coinsDepositedMap = new HashMap<>();
         int numberOfCoinsRet = 0;
-
-        //sum each map value representing the numbers of coins deposited of each
-        //type of coin
-        if (coinsDepositedMap.containsKey(5)) {
-            numberOfCoinsRet += coinsDepositedMap.get(5);
-        }
-        if (coinsDepositedMap.containsKey(10)) {
-            numberOfCoinsRet += coinsDepositedMap.get(10);
-        }
-        if (coinsDepositedMap.containsKey(25)) {
-            numberOfCoinsRet += coinsDepositedMap.get(25);
-        }
 
         //deposit 3 nickle
         ps.addPayment(5);
@@ -270,8 +256,23 @@ public class PayStationImplTest {
         //should return map of 5=0, 10=0, 25=0
         coinsDepositedMap = ps.returnCoinMap();
 
-        System.out.println("shouldClearMapAfterCancel");
-        System.out.println(coinsDepositedMap);
+        //sum each map value representing the numbers of coins deposited of each
+        //type of coin
+        if (coinsDepositedMap.containsKey(5)) {
+            numberOfCoinsRet += coinsDepositedMap.get(5);
+        }
+        if (coinsDepositedMap.containsKey(10)) {
+            numberOfCoinsRet += coinsDepositedMap.get(10);
+        }
+        if (coinsDepositedMap.containsKey(25)) {
+            numberOfCoinsRet += coinsDepositedMap.get(25);
+        }
+
+//        System.out.print("after cancel numberOfCoinsRet ");
+//        System.out.println(numberOfCoinsRet);
+//
+//        System.out.println("shouldClearMapAfterCancel");
+//        System.out.println(coinsDepositedMap);
 
         assertEquals("Cancel should return 0 coin",
                 0, numberOfCoinsRet);
@@ -283,14 +284,64 @@ public class PayStationImplTest {
                 coinsDepositedMap.containsKey(25));
 
     }
-     @Test
-     public void ShouldTotalCoinsThatWasEnterAndEmptyThePaystation() throws IllegalCoinException{
-         
+
+    @Test
+    public void ShouldTotalCoinsThatWasEnterAndEmptyThePaystation() throws IllegalCoinException {
+
         ps.addPayment(10);
         ps.buy();
         ps.addPayment(25);
         ps.cancel();
         int shouldbenum = ps.empty();
-         assertEquals("should be 10",10,shouldbenum);
-     }
+        assertEquals("should be 10", 10, shouldbenum);
+    }
+
+@Test
+    public void shouldClearMapAfterBuy()
+            throws IllegalCoinException {
+        //create map of coins deposited object
+        Map<Integer, Integer> coinsDepositedMap = new HashMap<>();
+        int numberOfCoinsRet = 0;
+
+        //deposit 3 nickle
+        ps.addPayment(5);
+        ps.addPayment(5);
+        ps.addPayment(5);
+        //deposit 0 dimes    
+        //deposit 1 quarter
+        ps.addPayment(25);
+        
+        ps.buy();
+        
+        //should return map of 5=0, 10=0, 25=0
+        coinsDepositedMap = ps.returnCoinMap();
+
+        //sum each map value representing the numbers of coins deposited of each
+        //type of coin
+        if (coinsDepositedMap.containsKey(5)) {
+            numberOfCoinsRet += coinsDepositedMap.get(5);
+        }
+        if (coinsDepositedMap.containsKey(10)) {
+            numberOfCoinsRet += coinsDepositedMap.get(10);
+        }
+        if (coinsDepositedMap.containsKey(25)) {
+            numberOfCoinsRet += coinsDepositedMap.get(25);
+        }
+
+//        System.out.print("after buy numberOfCoinsRet ");
+//        System.out.println(numberOfCoinsRet);
+//
+//        System.out.println("shouldClearMapAfterBuy");
+//        System.out.println(coinsDepositedMap);
+
+        assertEquals("buy should return 0 coin",
+                0, numberOfCoinsRet);
+        assertTrue("buy should return map containing 5 as key",
+                coinsDepositedMap.containsKey(5));
+        assertTrue("buy should return map containing 10 as key",
+                coinsDepositedMap.containsKey(10));
+        assertTrue("buy should return map containing 25 as key",
+                coinsDepositedMap.containsKey(25));
+
+    }    
 }
