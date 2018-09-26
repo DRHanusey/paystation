@@ -51,17 +51,13 @@ public class PayStationImpl implements PayStation {
         switch (coinValue) {
             case 5:
                 //retuns value for given key, adds 1 to it, puts it back into map
-                coinMap.put(5, coinMap.get(5) + 1);
-                
+                coinMap.put(5, coinMap.get(5) + 1);                
                 break;
             case 10:
-                coinMap.put(10, coinMap.get(10) + 1);
-                
+                coinMap.put(10, coinMap.get(10) + 1);                
                 break;
             case 25:
-                coinMap.put(25, coinMap.get(25) + 1);
-                
-                
+                coinMap.put(25, coinMap.get(25) + 1);                 
                 break;
             default:
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
@@ -81,12 +77,15 @@ public class PayStationImpl implements PayStation {
         Receipt r = new ReceiptImpl(timeBought);
         totalcoins += insertedSoFar;
         reset();
+        
+        //Resets the coinMap to all 0 values
+        initCoinsDepositedMap();
+        
         return r;
     }
 
     @Override
     public Map<Integer, Integer> cancel() {
-
         
         if (coinMap.get(5) == 0) {
             coinMap.remove(5);
@@ -96,9 +95,7 @@ public class PayStationImpl implements PayStation {
         }
         if (coinMap.get(25) == 0) {
             coinMap.remove(25);
-        }
-        //test
-        
+        }        
 
         //Creates new map and makes a copy of the current coinMap
         Map<Integer, Integer> coinMapCopy = new HashMap<>();
