@@ -3,6 +3,8 @@ package paystation.domain;
 import java.util.HashMap;
 import java.util.Map;
 
+//This is s test
+
 /**
  * Implementation of the pay station.
  *
