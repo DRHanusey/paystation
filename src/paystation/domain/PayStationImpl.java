@@ -3,7 +3,8 @@ package paystation.domain;
 import java.util.HashMap;
 import java.util.Map;
 
-//This is s test
+
+
 
 /**
  * Implementation of the pay station.
@@ -31,6 +32,10 @@ public class PayStationImpl implements PayStation {
     private int n;
     private int q;
     private int d;
+    
+    public void blankMethod(){
+        
+    }
     
     //initiate map object to zero
     public void initCoinsDepositedMap() {
