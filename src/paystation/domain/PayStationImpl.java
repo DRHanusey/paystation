@@ -2,6 +2,7 @@ package paystation.domain;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 
 
@@ -32,6 +33,15 @@ public class PayStationImpl implements PayStation {
     private int n;
     private int q;
     private int d;
+    
+    private int userSelection;
+    Scanner keyboard = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        //System.out.println("Hello World!");
+        PayStationImpl test = new PayStationImpl(); //new instance of the class, for testing purposes
+        test.payStationLoop(); //runs the main display loop
+    }
     
     public void blankMethod(){
         
@@ -129,4 +139,57 @@ public class PayStationImpl implements PayStation {
         
      return newtotal;
     }
+    
+    //gets the selection from the user (as an integer)
+    public int getUserInput(){
+        userSelection = keyboard.nextInt(); //gets integer (values from one to five) from user
+        //checks to see that user has inputted a valid number
+        if (userSelection < 1 || userSelection > 5){ 
+            userSelection = -1; //user has selection an invalid option, set userSelection to -1 to indicate this
+        }
+        return userSelection;
+    }
+    
+    //prints the display options that the user can choose from
+    public void printDisplay(){
+        System.out.println("1) Desposit Coins");
+        System.out.println("2) Display ");
+        System.out.println("3) Buy Ticket");
+        System.out.println("4) Cancel ");
+        System.out.println("5) Change Rate Strategy\n");
+    }
+    
+    //main loop for paystation
+    public void payStationLoop(){
+        boolean start = true;
+        while (start){
+            printDisplay();
+            getUserInput();
+            switch(userSelection){
+                case 1: //allows the user to deposit coins
+                        depositCoins();
+                        break;
+                case 2: //call the display
+                        break;
+                case 3: //call a function that lets user buy ticket
+                        break;
+                case 4: //call cancel function
+                        break;
+                case 5: //call change rate strategy function
+                        break;
+                default: //the user has entered an invalid input
+                    System.out.println("Please enter a valid selection.\n");
+            }
+        }
+        
+    }
+    
+    public int depositCoins(){ //instructs user to enter coin value and returns user's inputted coin value
+        int coinValue;
+        System.out.print("Enter Coin Value: ");
+        coinValue = keyboard.nextInt(); //gets coin value from user
+        System.out.println(" "); //adds new line for visual purposes
+        return coinValue; //user's entered coin value is returned
+    }
+    
 }

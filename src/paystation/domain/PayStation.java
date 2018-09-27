@@ -63,4 +63,9 @@ public interface PayStation {
     public Map<Integer, Integer> returnCoinMap();
     
     public int empty();
+    
+    public int getUserInput();
+    public void printDisplay();
+    public void payStationLoop();
+    public int depositCoins();
 }
