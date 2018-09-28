@@ -64,8 +64,15 @@ public interface PayStation {
     
     public int empty();
     
+    //gets the user's input (an integer from 1-5)
     public int getUserInput();
+    
+    //prints the display that the use sees
     public void printDisplay();
+    
+    //the main paystation loop
     public void payStationLoop();
+    
+    //allows the user to make a payment (by entering coin value)
     public int depositCoins();
 }
