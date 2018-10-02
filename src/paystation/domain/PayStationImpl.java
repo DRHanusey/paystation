@@ -3,7 +3,8 @@ package paystation.domain;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;
 
 
 
@@ -33,11 +34,11 @@ public class PayStationImpl implements PayStation {
     private int n;
     private int q;
     private int d;
-    
+    private int rate = 1;
     private int userSelection;
     Scanner keyboard = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IllegalCoinException{
         //System.out.println("Hello World!");
         PayStationImpl test = new PayStationImpl(); //new instance of the class, for testing purposes
         test.payStationLoop(); //runs the main display loop
@@ -79,8 +80,21 @@ public class PayStationImpl implements PayStation {
             default:
                 throw new IllegalCoinException("Invalid coin: " + coinValue);
         }
+        
         insertedSoFar += coinValue;
         
+        switch (rate){
+            case 1:
+                timeBought = insertedSoFar / 5 * 2;
+                break;
+            case 2:
+                //progressive rate
+                break;
+            case 3:
+                //alternating rate
+                break;
+                
+        }
         timeBought = insertedSoFar / 5 * 2;
     }
 
@@ -160,22 +174,30 @@ public class PayStationImpl implements PayStation {
     }
     
     //main loop for paystation
-    public void payStationLoop(){
+    @Override
+    public void payStationLoop()
+        throws IllegalCoinException{
         boolean start = true;
         while (start){
             printDisplay();
             getUserInput();
             switch(userSelection){
                 case 1: //allows the user to deposit coins
-                        depositCoins();
+                        addPayment(depositCoins());
                         break;
                 case 2: //call the display
+                    getDate();
                         break;
                 case 3: //call a function that lets user buy ticket
+                    getDate();
+                    System.out.println(buy().value());
+                    System.out.println();
                         break;
                 case 4: //call cancel function
+                    printMap();
                         break;
                 case 5: //call change rate strategy function
+                    paymentRate();
                         break;
                 default: //the user has entered an invalid input
                     System.out.println("Please enter a valid selection.\n");
@@ -192,4 +214,21 @@ public class PayStationImpl implements PayStation {
         return coinValue; //user's entered coin value is returned
     }
     
+    public void getDate(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        LocalDateTime now = LocalDateTime.now();  
+        System.out.println(dtf.format(now));
+    }
+    
+    public void printMap(){
+        System.out.println(coinMap);
+        cancel();
+    }
+    
+    public void paymentRate(){
+        System.out.println("1: linear payment rate");
+        System.out.println("2: progressive rate");
+        System.out.println("3: alternating rate");
+        rate = keyboard.nextInt();
+    }
 }

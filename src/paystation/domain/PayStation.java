@@ -71,8 +71,10 @@ public interface PayStation {
     public void printDisplay();
     
     //the main paystation loop
-    public void payStationLoop();
+    public void payStationLoop() throws IllegalCoinException;
     
     //allows the user to make a payment (by entering coin value)
     public int depositCoins();
+    
+
 }
