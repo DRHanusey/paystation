@@ -186,15 +186,16 @@ public class PayStationImpl implements PayStation {
                         addPayment(depositCoins());
                         break;
                 case 2: //call the display
-                    getDate();
+                        System.out.println("time Bought so far: " +timeBought);
                         break;
                 case 3: //call a function that lets user buy ticket
                     getDate();
-                    System.out.println(buy().value());
-                    System.out.println();
+                    System.out.println("time bought: " + buy().value());
+                    start = false;
                         break;
                 case 4: //call cancel function
                     printMap();
+                    start = false;
                         break;
                 case 5: //call change rate strategy function
                     paymentRate();
