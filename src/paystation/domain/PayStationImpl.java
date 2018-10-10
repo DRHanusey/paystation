@@ -27,24 +27,21 @@ import java.time.LocalDateTime;
  */
 public class PayStationImpl implements PayStation {
 
-    private int insertedSoFar;
-    private int timeBought;
-    Map<Integer, Integer> coinMap = new HashMap<>();
+    private int insertedSoFar, timeBought, userSelection, n, q, d;
     private int totalcoins = 0;
-    private int n;
-    private int q;
-    private int d;
     private int rate = 1;
-    private int userSelection;
     Scanner keyboard = new Scanner(System.in);
+    
+    //used for tracking "type of coin = number of coins" 
+    Map<Integer, Integer> coinMap = new HashMap<>();
+    
+    //Default rate strategy to be implemented is linear
+    RateStrategy rs = new RateStrategy();
 
     public static void main(String[] args) throws IllegalCoinException{
         //System.out.println("Hello World!");
         PayStationImpl test = new PayStationImpl(); //new instance of the class, for testing purposes
         test.payStationLoop(); //runs the main display loop
-    }
-    
-    public void blankMethod(){
         
     }
     
@@ -82,20 +79,9 @@ public class PayStationImpl implements PayStation {
         }
         
         insertedSoFar += coinValue;
-        
-        switch (rate){
-            case 1:
-                timeBought = insertedSoFar / 5 * 2;
-                break;
-            case 2:
-                //progressive rate
-                break;
-            case 3:
-                //alternating rate
-                break;
-                
-        }
-        timeBought = insertedSoFar / 5 * 2;
+
+        timeBought = rs.calculateTime(coinValue);
+
     }
 
     @Override
@@ -166,7 +152,7 @@ public class PayStationImpl implements PayStation {
     
     //prints the display options that the user can choose from
     public void printDisplay(){
-        System.out.println("1) Desposit Coins");
+        System.out.println("1) Deposit Coins");
         System.out.println("2) Display ");
         System.out.println("3) Buy Ticket");
         System.out.println("4) Cancel ");
@@ -226,10 +212,29 @@ public class PayStationImpl implements PayStation {
         cancel();
     }
     
+    
+
+    
     public void paymentRate(){
+        if (timeBought != 0){
+            System.out.println("Can not change rate in middle of transaction.");
+            System.out.println("Buy or Cancel current transaction before changing rate.");
+            return;
+        }
         System.out.println("1: linear payment rate");
         System.out.println("2: progressive rate");
         System.out.println("3: alternating rate");
         rate = keyboard.nextInt();
+        
+        if (rate == 1){
+            rs = new RateStrategy();
+        }else if (rate==2){
+            rs = new ProgressiveRS();
+        }else if(rate==3){
+            rs = new AlternatingRS();
+        }else{
+            System.out.println(rate + " is not a valid choice, please select agian.");
+        }
+        
     }
 }
