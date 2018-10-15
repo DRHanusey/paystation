@@ -23,9 +23,9 @@ public class ProgressiveRS extends RateStrategy {
         insertedSoFar += coinValue;
 
         ////Calculate time purchased based on amount entered into paystation
-        if (CurrentTime < TIER_1) {
+        if (insertedSoFar < TIER_1) {
             CurrentTime = (insertedSoFar / 5 * 2);
-        } else if (CurrentTime < TIER_2) {
+        } else if (insertedSoFar < TIER_2) {
             CurrentTime = (insertedSoFar - 150) * 3 / 10 + 60;
             //System.out.println("(< 120)current time = " + CurrentTime + ", insertedSoFar = " +  insertedSoFar);
         } else {
